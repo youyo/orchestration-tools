@@ -1,0 +1,45 @@
+############ GENERAL PARAMETERS #################
+PidFile=/var/run/zabbix/zabbix_agentd.pid
+LogFile=/var/log/zabbix/zabbix_agentd.log
+LogFileSize=10
+# DebugLevel=3
+# SourceIP=
+# EnableRemoteCommands=0
+# LogRemoteCommands=0
+
+###### Passive checks related
+Server=<%= node[:zabbix][:agent][:server][0] %>
+ListenPort=10050
+ListenIP=0.0.0.0
+StartAgents=3
+
+###### Active checks related
+ServerActive=
+#Hostname=
+HostnameItem=system.hostname
+# HostMetadata=
+# HostMetadataItem=
+RefreshActiveChecks=60
+# BufferSend=5
+# BufferSize=100
+# MaxLinesPerSecond=100
+
+############# ADVANCED PARAMETERS #################
+Timeout=30
+AllowRoot=<%= node[:zabbix][:agent][:allow_root][0] %>
+Include=/etc/zabbix/zabbix_agentd.d/
+
+######## USER-DEFINED MONITORED PARAMETERS #######
+# UnsafeUserParameters=0
+
+######### LOADABLE MODULES #######
+# LoadModulePath=${libdir}/modules
+# LoadModule=
+UserParameter=postfix.queuen,mailq | grep "^[0-9A-F]" | wc -l
+UserParameter=redis.status[*],redis-cli info | grep -w "$1" | awk -F':' '{print $$2}'
+UserParameter=redis.ping,redis-cli ping 2>/dev/null | grep -w 'PONG' | wc -l
+UserParameter=mysql.replication_io,test `HOME=/var/lib/zabbix mysql -e 'show slave status\G'|grep 'Slave_IO_Running:'|awk '{print $2}'` = 'Yes' && echo 1 || echo 0
+UserParameter=mysql.replication_sql,test `HOME=/var/lib/zabbix mysql -e 'show slave status\G'|grep 'Slave_SQL_Running:'|awk '{print $2}'` = 'Yes' && echo 1 || echo 0
+UserParameter=mysql.replication_seconds,HOME=/var/lib/zabbix mysql -e 'show slave status\G'|grep 'Seconds_Behind_Master:'|awk '{print $2}'
+UserParameter=kvm.info[*],/etc/zabbix/bin/infokvm.sh $1
+UserParameter=netstat.count[*],netstat -ant | grep -w $1 | wc -l
