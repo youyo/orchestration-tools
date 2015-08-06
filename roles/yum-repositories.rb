@@ -1,4 +1,4 @@
-include_recipe './common-definition.rb'
+include_recipe '../cookbooks/common-definitions/default.rb'
 include_recipe '../cookbooks/yum/epel/default.rb'
 include_recipe '../cookbooks/yum/remi/default.rb'
 include_recipe '../cookbooks/yum/mysql/default.rb'
