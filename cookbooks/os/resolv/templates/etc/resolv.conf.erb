@@ -1,0 +1,3 @@
+options single-request-reopen
+<% node[:os][:resolv].each do |ip| %><%= "nameserver\t#{ip}" %>
+<% end %>
