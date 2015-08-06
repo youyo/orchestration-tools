@@ -8,7 +8,7 @@ LogFileSize=10
 # LogRemoteCommands=0
 
 ###### Passive checks related
-Server=<%= node[:zabbix][:agent][:server][0] %>
+Server=<%= node[:zabbix][:agent][:server] %>
 ListenPort=10050
 ListenIP=0.0.0.0
 StartAgents=3
@@ -26,7 +26,7 @@ RefreshActiveChecks=60
 
 ############# ADVANCED PARAMETERS #################
 Timeout=30
-AllowRoot=<%= node[:zabbix][:agent][:allow_root][0] %>
+AllowRoot=<%= node[:zabbix][:agent][:allow_root] %>
 Include=/etc/zabbix/zabbix_agentd.d/
 
 ######## USER-DEFINED MONITORED PARAMETERS #######

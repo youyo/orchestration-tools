@@ -1,3 +1,12 @@
+node.reverse_merge!({
+  zabbix: {
+    agent: {
+      server: '127.0.0.1',
+      allow_root: 0
+    }
+  }
+})
+
 %w(zabbix-agent zabbix-sender zabbix-get).each {|pkg| package pkg}
 
 %w(/var/lib/zabbix /etc/zabbix/bin).each do |dir|
