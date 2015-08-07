@@ -1,8 +1,0 @@
-include_recipe '../cookbooks/common-definitions/default.rb'
-include_recipe '../cookbooks/yum/epel/default.rb'
-include_recipe '../cookbooks/yum/remi/default.rb'
-include_recipe '../cookbooks/yum/mysql/default.rb'
-include_recipe '../cookbooks/yum/nginx/default.rb'
-include_recipe '../cookbooks/yum/zabbix/default.rb'
-include_recipe '../cookbooks/yum/owncloud/default.rb'
-#include_recipe '../cookbooks/yum/clean/default.rb'
