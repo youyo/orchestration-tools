@@ -1,7 +1,7 @@
 node.reverse_merge!({
   zabbix: {
     agent: {
-      server: '127.0.0.1',
+      server: ['127.0.0.1'],
       allow_root: 0
     }
   }
@@ -21,6 +21,8 @@ template '/etc/zabbix/zabbix_agentd.conf' do
   owner 'zabbix'
   group 'zabbix'
   mode '0644'
+  @servers = node[:zabbix][:agent][:server].join(',')
+  variables(zabbix_servers: @servers)
 end
 
 template '/etc/zabbix/bin/infokvm.sh' do

@@ -8,7 +8,7 @@ LogFileSize=10
 # LogRemoteCommands=0
 
 ###### Passive checks related
-Server=<%= node[:zabbix][:agent][:server] %>
+Server=<%= @zabbix_servers %>
 ListenPort=10050
 ListenIP=0.0.0.0
 StartAgents=3
