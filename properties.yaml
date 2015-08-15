@@ -2,12 +2,12 @@ role: 'yum-repositories'
 os:
   hostname: 'localhost.localdomain'
   #packages: 
-  user: 
-    - 
-      - "root"
-      - "password"
-      - "/root"
-      - 
+  user:
+    -
+      name: "root"
+      password: "password"
+      homedir: "/root"
+      authkey:
         generate: false
         keypass: ""
         publickey: ""
