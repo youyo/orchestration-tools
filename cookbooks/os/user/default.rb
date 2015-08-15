@@ -10,37 +10,37 @@ node.reverse_merge!({
 
 node[:os][:user].each do |userdata|
 
-  user userdata[0] do
+  user userdata[:name] do
     action :create
-    password UnixCrypt::SHA512.build(userdata[1], 'QW2My1VDiUSU4ADx')
+    password UnixCrypt::SHA512.build(userdata[:password], 'QW2My1VDiUSU4ADx')
     home userdata[2]
   end
 
-  directory "#{userdata[2]}/.ssh" do
-    owner "#{userdata[0]}"
-    group "#{userdata[0]}"
+  directory "#{userdata[:homedir]}/.ssh" do
+    owner "#{userdata[:name]}"
+    group "#{userdata[:name]}"
     mode '0700'
   end
 
-  file "#{userdata[2]}/.ssh/authorized_keys" do
-    owner "#{userdata[0]}"
-    group "#{userdata[0]}"
+  file "#{userdata[:homedir]}/.ssh/authorized_keys" do
+    owner "#{userdata[:name]}"
+    group "#{userdata[:name]}"
     mode '0600'
   end
 
-  if userdata[3][:generate] == true
-    execute "create ssh key #{userdata[0]}" do
-      not_if "test -e #{userdata[2]}/.ssh/id_rsa"
+  if userdata[:authkey][:generate] == true
+    execute "create ssh key #{userdata[:name]}" do
+      not_if "test -e #{userdata[:homedir]}/.ssh/id_rsa"
       command "
-        su - #{userdata[0]} -c \"ssh-keygen -q -t rsa -N '#{userdata[3][:keypass]}' -C '' -f #{userdata[2]}/.ssh/id_rsa\"
-        su - #{userdata[0]} -c \"cat #{userdata[2]}/.ssh/id_rsa.pub >> #{userdata[2]}/.ssh/authorized_keys\"
+        su - #{userdata[:name]} -c \"ssh-keygen -q -t rsa -N '#{userdata[:authkey][:keypass]}' -C '' -f #{userdata[:homedir]}/.ssh/id_rsa\"
+        su - #{userdata[:name]} -c \"cat #{userdata[:homedir]}/.ssh/id_rsa.pub >> #{userdata[:homedir]}/.ssh/authorized_keys\"
       "
     end
   end
 
-  if userdata[3][:publickey].size != 0
-    execute "echo '#{userdata[3][:publickey]}' >> #{userdata[2]}/.ssh/authorized_keys" do
-      not_if "grep -q -w '#{userdata[3][:publickey]}' #{userdata[2]}/.ssh/authorized_keys"
+  if userdata[:authkey][:publickey].size != 0
+    execute "echo '#{userdata[:authkey][:publickey]}' >> #{userdata[:homedir]}/.ssh/authorized_keys" do
+      not_if "grep -q -w '#{userdata[:authkey][:publickey]}' #{userdata[:homedir]}/.ssh/authorized_keys"
     end
   end
 
