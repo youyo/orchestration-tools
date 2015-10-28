@@ -1,5 +1,6 @@
 include_cookbook 'common-definitions'
 include_role 'yum-repositories'
+include_cookbook 'os/kernel-params'
 include_cookbook 'os/update'
 include_cookbook 'os/packages'
 include_cookbook 'os/hostname'
