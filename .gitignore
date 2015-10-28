@@ -5,3 +5,6 @@ private/
 vendor/
 *.swp
 tmp/
+.env
+.vagrant/
+Vagrantfile
