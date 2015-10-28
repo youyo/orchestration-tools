@@ -1,0 +1,66 @@
+[mysqld]
+datadir = /var/lib/mysql
+socket = /var/lib/mysql/mysql.sock
+pid-file = /var/run/mysqld/mysqld.pid
+user = mysql
+symbolic-links = 0
+character-set-server = utf8
+default-storage-engine = InnoDB
+explicit_defaults_for_timestamp = ON
+skip-name-resolve
+skip-character-set-client-handshake
+
+innodb_strict_mode
+innodb_file_per_table
+innodb_flush_method = O_DIRECT
+innodb_write_io_threads = 4
+innodb_read_io_threads = 4
+innodb_thread_concurrency = 16
+innodb_buffer_pool_size = <%= node[:mysql][:server][:innodb_buffer_pool_size] %>
+innodb_log_file_size = <%= node[:mysql][:server][:innodb_log_file_size] %>
+innodb_log_files_in_group = 2
+innodb_flush_log_at_trx_commit = <%= node[:mysql][:server][:innodb_flush_log_at_trx_commit] %>
+innodb_log_buffer_size = 8M
+innodb_data_file_path = ibdata1:32M:autoextend
+innodb_autoextend_increment = 32
+innodb_fast_shutdown = 0
+innodb_buffer_pool_dump_at_shutdown = ON
+innodb_buffer_pool_load_at_startup = ON
+
+query_cache_size = <%= node[:mysql][:server][:query_cache_size] %>
+query_cache_limit = 2M
+query_cache_min_res_unit = 4k
+query_cache_type = <%= node[:mysql][:server][:query_cache_type] %>
+
+tmp_table_size = <%= node[:mysql][:server][:tmp_table_size] %>
+max_heap_table_size = <%= node[:mysql][:server][:max_heap_table_size] %>
+
+table_open_cache = 1024
+max_allowed_packet = 1M
+sort_buffer_size = 512K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+join_buffer_size = 256K
+key_buffer_size = 16M
+
+max_connections = <%= node[:mysql][:server][:max_connections] %>
+thread_cache_size = <%= node[:mysql][:server][:thread_cache_size] %>
+
+slow_query_log
+slow_query_log_file = /var/log/mysqld/mysqld-slow.log
+long_query_time = 1
+
+log-error = /var/log/mysqld/mysqld.log
+wait_timeout = 60
+
+#log-bin = mysql-bin-log
+#relay-log = relay-bin-log
+#server-id = <%= node[:mysql][:server][:server_id] %>
+#expire_logs_days = <%= node[:mysql][:server][:expire_logs_days] %>
+#binlog_format = mixed
+#binlog_rows_query_log_events = 1
+
+[mysqld_safe]
+log-error = /var/log/mysqld/mysqld.log
+pid-file = /var/run/mysqld/mysqld.pid
+character-set-server = utf8
