@@ -10,3 +10,9 @@ when /^7/
   end
 
 end
+
+if node[:platform] == "amazon"
+  rpm_package_from_url 'http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm' do
+    repo 'mysql56-community'
+  end
+end
