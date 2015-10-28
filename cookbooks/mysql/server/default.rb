@@ -55,3 +55,10 @@ execute 'SecureInstall' do
     mysql -u root -p#{node[:mysql][:server][:password]} -e \"FLUSH PRIVILEGES;\"
   "
 end
+
+template '/var/lib/zabbix/.my.cnf' do
+  owner 'zabbix'
+  group 'zabbix'
+  mode '0640'
+  notifies :restart, "service[zabbix-agent]"
+end
