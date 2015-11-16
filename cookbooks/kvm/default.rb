@@ -71,6 +71,9 @@ template '/etc/init.d/vncserver' do
 end
 
 directory '/root/.vnc'
+file '/root/.vnc/passwd' do
+  mode '0600'
+end
 execute "echo '2up78djo0gu9'|vncpasswd -f > /root/.vnc/passwd" do
   not_if "test -e /root/.vnc/passwd"
 end
