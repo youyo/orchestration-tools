@@ -10,7 +10,7 @@ when /^6/
     not_if "hostname --fqdn|grep -w #{node[:os][:hostname]}"
   end
   execute "sed -i \"s|HOSTNAME=.*|HOSTNAME=#{node[:os][:hostname]}|\" /etc/sysconfig/network" do
-    not_if "grep \"#{node[:os][:hostname]}\" /etc/sysconfig/network|awk -F'=' '{print $2}'"
+    not_if "grep -q -w \"#{node[:os][:hostname]}\" /etc/sysconfig/network"
   end
 
 when /^7/
