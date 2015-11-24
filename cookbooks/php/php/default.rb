@@ -9,7 +9,7 @@ node.reverse_merge!({
       user: 'apache',
       fpm: {
         status: true,
-        listen: '127.0.0.1',
+        listen: '127.0.0.1:9000',
         pm_max_children: 32,
         pm_start_servers: 8,
         pm_min_spare_servers: 8,
