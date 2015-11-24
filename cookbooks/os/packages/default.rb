@@ -1,20 +1,8 @@
 node.reverse_merge!({
   os: {
     packages: [
-      "wget",
-      "bash-completion",
-      "screen",
-      "sysstat",
-      "dstat",
-      "vim-enhanced",
-      "openssh-server",
-      "git",
-      "libtool",
-      "nc",
-      "sudo",
-      "logrotate",
-      "tar",
-      "ed"
+      "wget","bash-completion","screen","sysstat","dstat","vim-enhanced","openssh-server",
+      "git","libtool","nc","sudo","logrotate","tar","ed"
     ]
   }
 })
