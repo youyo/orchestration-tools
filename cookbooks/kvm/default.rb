@@ -18,6 +18,10 @@ node.reverse_merge!({
   @desktop @japanese-support
 ).each {|pkg| package pkg}
 
+%w(NetworkManager dnsmasq iptables ip6tables).each do |srv|
+  disable_daemon srv
+end
+
 node[:kvm][:nic].each_with_index do |nic,index|
   execute "set_interface:#{nic[:name]}" do
     command "
@@ -70,12 +74,18 @@ template '/etc/init.d/vncserver' do
   mode '0755'
 end
 
-directory '/root/.vnc'
-file '/root/.vnc/passwd' do
-  mode '0600'
+directory '/root/.vnc' do
+  owner 'root'
+  group 'root'
+  mode '0755'
 end
+
 execute "echo '2up78djo0gu9'|vncpasswd -f > /root/.vnc/passwd" do
   not_if "test -e /root/.vnc/passwd"
+end
+
+file '/root/.vnc/passwd' do
+  mode '0600'
 end
 
 execute 'sed -i "s|^id:3|id:5|" /etc/inittab' do
@@ -84,6 +94,6 @@ end
 
 %w(vncserver libvirtd).each do |svc|
   service svc do
-    action :enable
+    action [:start, :enable]
   end
 end
