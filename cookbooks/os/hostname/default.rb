@@ -20,4 +20,8 @@ when /^7/
 
 end
 
-template '/etc/hosts'
+template '/etc/hosts' do
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
