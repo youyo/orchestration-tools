@@ -1,0 +1,32 @@
+role: 'kvm'
+os:
+  hostname: 'localhost.localdomain'
+  #packages: 
+  user:
+    -
+      name: "root"
+      password: "password"
+      homedir: "/root"
+      authkey:
+        generate: false
+        keypass: ""
+        publickey: ""
+  resolv:
+    - '8.8.8.8'
+    - '8.8.4.4'
+  sshd:
+    port: 10022
+    permitrootlogin: 'no'
+    passwordauth: 'no'
+zabbix:
+  agent:
+    server: 
+      - '127.0.0.1'
+    allow_root: 0
+kvm:
+  nic:
+    - 
+      name: 'eth0'
+      ip: '192.168.1.10'
+      netmask: '255.255.255.0'
+      gw: '192.168.1.1'
