@@ -12,15 +12,9 @@ node.reverse_merge!({
 })
 
 %w(
-  virt-manager tigervnc-server bridge-utils
-  @base @development @virtualization @virtualization-client
-  @virtualization-platform @virtualization-tools @x-window-system
-  @desktop @japanese-support
+  bridge-utils @base @virtualization @virtualization-client
+  @virtualization-platform @virtualization-tools iptables-services
 ).each {|pkg| package pkg}
-
-%w(NetworkManager dnsmasq iptables ip6tables).each do |srv|
-  disable_daemon srv
-end
 
 node[:kvm][:nic].each_with_index do |nic,index|
   execute "set_interface:#{nic[:name]}" do
@@ -68,32 +62,20 @@ EOL
   end
 end
 
-template '/etc/init.d/vncserver' do
-  owner 'root'
-  group 'root'
-  mode '0755'
+service 'libvirtd' do
+  action [:start, :enable]
 end
 
-directory '/root/.vnc' do
-  owner 'root'
-  group 'root'
-  mode '0755'
+execute 'stop_default_network' do
+  only_if "virsh net-list --all | grep -w 'default' | grep -w 'active'"
+  command "
+    virsh net-destroy default
+    virsh net-autostart default --disable
+  "
 end
 
-execute "echo '2up78djo0gu9'|vncpasswd -f > /root/.vnc/passwd" do
-  not_if "test -e /root/.vnc/passwd"
-end
-
-file '/root/.vnc/passwd' do
-  mode '0600'
-end
-
-execute 'sed -i "s|^id:3|id:5|" /etc/inittab' do
-  only_if 'grep -q "^id:3" /etc/inittab'
-end
-
-%w(vncserver libvirtd).each do |svc|
-  service svc do
-    action [:start, :enable]
+%w(NetworkManager dnsmasq iptables ip6tables firewalld).each do |srv|
+  service srv do
+    action [:stop, :disable]
   end
 end
