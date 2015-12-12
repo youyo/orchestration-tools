@@ -5,7 +5,7 @@ node.reverse_merge!({
 })
 
 case node[:platform_version]
-when /^6|^5/
+when /^6|^5|amazon/
   execute "hostname #{node[:os][:hostname]}" do
     not_if "hostname --fqdn|grep -w #{node[:os][:hostname]}"
   end
