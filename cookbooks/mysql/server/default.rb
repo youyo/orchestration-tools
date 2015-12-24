@@ -52,6 +52,7 @@ execute 'SecureInstall' do
     mysql -u root -p#{node[:mysql][:server][:password]} -e \"DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1');\"
     mysql -u root -p#{node[:mysql][:server][:password]} -e \"DROP DATABASE test;\"
     mysql -u root -p#{node[:mysql][:server][:password]} -e \"DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';\"
+    mysql -u root -p#{node[:mysql][:server][:password]} -e \"GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED BY '#{node[:mysql][:server][:password]}';\"
     mysql -u root -p#{node[:mysql][:server][:password]} -e \"FLUSH PRIVILEGES;\"
   "
 end
