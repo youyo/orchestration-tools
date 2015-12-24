@@ -1,0 +1,39 @@
+role: 'db-server/mysql'
+os:
+  hostname: 'localhost.localdomain'
+  #packages: 
+  user:
+    -
+      name: "root"
+      password: "password"
+      homedir: "/root"
+      authkey:
+        generate: false
+        keypass: ""
+        publickey: ""
+  resolv:
+    - '8.8.8.8'
+    - '8.8.4.4'
+  sshd:
+    port: 10022
+    permitrootlogin: 'no'
+    passwordauth: 'no'
+zabbix:
+  agent:
+    server: 
+      - '127.0.0.1'
+    allow_root: 0
+mysql:
+  server:
+    password: 'Passw0rd'
+    innodb_buffer_pool_size: '64MB'
+    innodb_log_file_size: '32MB'
+    innodb_flush_log_at_trx_commit: 1
+    query_cache_size: '32MB'
+    query_cache_type: 1
+    tmp_table_size: '32MB'
+    max_heap_table_size: '32MB'
+    max_connections: 256
+    thread_cache_size: 256
+    server_id: 1
+    expire_logs_days: 30
