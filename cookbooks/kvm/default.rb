@@ -11,9 +11,16 @@ node.reverse_merge!({
   }
 })
 
+case node[:platform_version]
+when /^6/
+  package 'iptables'
+when /^7/
+  package 'iptables-services'
+end
+
 %w(
   bridge-utils @base @virtualization @virtualization-client
-  @virtualization-platform @virtualization-tools iptables-services
+  @virtualization-platform @virtualization-tools
 ).each {|pkg| package pkg}
 
 node[:kvm][:nic].each_with_index do |nic,index|
