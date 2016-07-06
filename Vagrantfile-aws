@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Dotenv.load
+Vagrant.configure(2) do |config|
+  config.vm.box = "dummy"
+  config.vm.box_check_update = false
+  config.vm.synced_folder ".", "/vagrant"
+  config.vm.provider = 'aws'
+
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+    aws.ami = "ami-9a2fb89a"
+    aws.instance_type = "t2.nano"
+    aws.region = "ap-northeast-1"
+    aws.availability_zone = "ap-northeast-1a"
+    aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+    aws.security_groups = "sg-6fffea0d"
+    aws.subnet_id = "subnet-b9ecc6cd"
+    aws.associate_public_ip = true
+    aws.iam_instance_profile_name = "ec2_allow_fullaccess"
+    aws.user_data = "#!/bin/bash\necho 'Defaults:ec2-user !requiretty' > /etc/sudoers.d/99-vagrant-cloud-init-requiretty\nchmod 440 /etc/sudoers.d/99-vagrant-cloud-init-requiretty"
+    aws.tags = {
+      Name: 'vagrant-aws',
+      Description: "Boot from vagrant-aws"
+    }
+
+    override.ssh.username = "ec2-user"
+    override.ssh.private_key_path = "~/.ssh/id_rsa"
+  end
+
+  #config.vm.provision "shell", inline: <<-SHELL
+  #SHELL
+end
